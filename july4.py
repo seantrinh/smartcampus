@@ -87,7 +87,7 @@ try:
     print(local)
     print('----------------------------------------------------------------')
     addEverything = ("INSERT INTO temppi1 VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")
-    curs.execute(addEverything, (local.format('YYYY-MM-DD'),local.format('HH:mm:ss'),r,g,b,c,color_temp,lux,temp,pressure,sealevelpressure,vis,IR,uvIndex,humidity,tempera$
+    curs.execute(addEverything, (local.format('YYYY-MM-DD'),local.format('HH:mm:ss'),r,g,b,c,color_temp,lux,temp,pressure,sealevelpressure,vis,IR,uvIndex,humidity,temperature3))
     db.commit()
 
     time.sleep(900)

@@ -79,7 +79,7 @@ try:
     #db.commit()
     
     #HUMIDITY SENSOR
-    humidity, temperature3 = Adafruit_DHT.read_retry(sensor,pin)
+    humidity, temperature3 = Adafruit_DHT.read_retry(sensor_hum,pin)
     temp3 = temperature3 * (9/5) + 32
     if humidity is not None and temperature is not None:
       print('Temp{0:0.1f}*C Humidity={1:0.1f}%'.formate(temperature3, humidity))
@@ -89,10 +89,10 @@ try:
     #ArrowDateandTime
     utc = arrow.utcnow()
     local = utc.to('US/Eastern')
-      
-    addEverything = ("INSERT INTO temppi1 VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s")
-    curs.execute(addEverything, (local.format('YYYY-MM-DD'), local.format('HH:mm:ss'), r,g,b,c,color_temp,lux,temp,pressure,sealevelpressure,vis,IR,uvIndex,humidity,temp3))
-    db.commit()
+    print(local)  
+    #addEverything = ("INSERT INTO temppi1 VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s")
+    #curs.execute(addEverything, (local.format('YYYY-MM-DD'), local.format('HH:mm:ss'), r,g,b,c,color_temp,lux,temp,pressure,sealevelpressure,vis,IR,uvIndex,humidity,temp3))
+    #db.commit()
     
     time.sleep(900)
     

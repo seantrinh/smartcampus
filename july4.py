@@ -22,7 +22,7 @@ db = MySQLdb.connect (
   host = 'danube.stevens.edu',
   user = 'pi', #This changes for every sensor suite
   passwd = '10416232', #This also changes for every sensor suite
-  db = 'smartcampus', #Same as this
+  db = 'smartcampus',
   port = 3306)
 
 curs=db.cursor()

@@ -12,16 +12,18 @@ sensor = BMP085.BMP085()
 import SI1145.SI1145 as SI1145
 sensor_uv = SI1145.SI1145()
 
-#import Adafruit_DHT
-#sensor_hum = Adafruit_DHT.DHT22
-#pin = 12 #This changes depending on what GPIO port you put it in
+imort Adafruit_DHT
+sensor_hum = Adafruit_DHT.DHT22
+pin = 22 #This may differ between Raspberry Pi
+
+import arrow
 
 import MySQLdb
 
 db = MySQLdb.connect (
   host = 'danube.stevens.edu',
-  user = 'pi', #This changes for every sensor suite
-  passwd = '10416232', #This also changes for every sensor suite
+  user = 'pi1', #This changes for every sensor suite
+  passwd = 'vesonder', #This also changes for every sensor suite
   db = 'smartcampus',
   port = 3306)
 
@@ -41,9 +43,9 @@ try:
     print('Luminosity: {0} lux'.format(lux))
     print('----------------------------------------------------------------')
     
-    add_rgb = ("INSERT INTO rgb VALUES(%s,%s,%s,%s,%s,%s,%s,%s)")
-    curs.execute(add_rgb, (time.strftime("%Y/%m/%d"), time.strftime("%H:%M:%S"), r, g, b, c, color_temp, lux))
-    db.commit()
+    #add_rgb = ("INSERT INTO rgb VALUES(%s,%s,%s,%s,%s,%s,%s,%s)")
+    #curs.execute(add_rgb, (time.strftime("%Y/%m/%d"), time.strftime("%H:%M:%S"), r, g, b, c, color_temp, lux))
+    #db.commit()
     
     #PRESSURE SENSOR
     temp = sensor.read_temperature()
@@ -57,9 +59,9 @@ try:
     print('Sealevel Pressure = {0:0.2f} Pa'.format(sealevelpressure))
     print('----------------------------------------------------------------')
     
-    add_pressure = ("INSERT INTO pressurerecord VALUES(%s,%s,%s,%s,%s)")
-    curs.execute(add_pressure, (time.strftime("%Y/%m/%d"), time.strftime("%H:%M:%S"), temp, pressure, sealevelpressure))
-    db.commit()
+    #add_pressure = ("INSERT INTO pressurerecord VALUES(%s,%s,%s,%s,%s)")
+    #curs.execute(add_pressure, (time.strftime("%Y/%m/%d"), time.strftime("%H:%M:%S"), temp, pressure, sealevelpressure))
+    #db.commit()
     
     #UV SENSOR
     vis = sensor_uv.readVisible()
@@ -72,20 +74,27 @@ try:
     print 'UV Index: ' + str(uvIndex)
     print('----------------------------------------------------------------')
     
-    addLight = ("INSERT INTO uvlight VALUES(%s,%s,%s,%s,%s)")
-    curs.execute(addLight, (time.strftime("%Y/%m/%d"), time.strftime("%H:%M:%S"), vis, IR, uvIndex))
-    db.commit()
-    
-    #HUMIDITY SENSOR
-    #humidity, temp3 = Adafruit_DHT.read_retry(sensor_hum, pin)
-    #print("Humidity = " + str(humidity))
-    #print('################################################################')
-    
-    #add_hum = ("INSERT INTO humidity VALUES(%s,%s,%s)")
-    #curs.execute(add_hum, (time.strftime("%Y/%m/%d"), time.strftime("%H:%M:%S"), humidity))
+    #addLight = ("INSERT INTO uvlight VALUES(%s,%s,%s,%s,%s)")
+    #curs.execute(addLight, (time.strftime("%Y/%m/%d"), time.strftime("%H:%M:%S"), vis, IR, uvIndex))
     #db.commit()
     
-    time.sleep(10)
+    #HUMIDITY SENSOR
+    humidity, temperature3 = Adafruit_DHT.read_retry(sensor,pin)
+    temp3 = temperature3 * (9/5) + 32
+    if humidity is not None and temperature is not None:
+      print('Temp{0:0.1f}*C Humidity={1:0.1f}%'.formate(temperature3, humidity))
+    else:
+      print('Failed to get reading. Try again!')
+      
+    #ArrowDateandTime
+    utc = arrow.utcnow()
+    local = utc.to('US/Eastern')
+      
+    addEverything = ("INSERT INTO temppi1 VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s")
+    curs.execute(addEverything, (local.format('YYYY-MM-DD'), local.format('HH:mm:ss'), r,g,b,c,color_temp,lux,temp,pressure,sealevelpressure,vis,IR,uvIndex,humidity,temp3))
+    db.commit()
+    
+    time.sleep(900)
     
 except KeyboardInterrupt:
   print "\nA keyboard interrupt has been noticed"

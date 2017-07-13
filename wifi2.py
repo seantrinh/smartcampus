@@ -32,7 +32,7 @@ try:
                 print("-------------------------------")
 
                 add_wifi=("INSERT INTO wifirecord VALUES(%s,%s,%s,%s)")
-                curs.execute(add_wifi, (time.strftime("%Y/%m/%d"), time.strftim$
+                curs.execute(add_wifi, (time.strftime("%Y/%m/%d"), time.strftime("%H:%M:%S"),download,upload))
                 db.commit()
                 time.sleep(10)
 

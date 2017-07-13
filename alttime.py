@@ -1,3 +1,5 @@
+#USE THIS ONLY IF ABSOLUTELY NECESSARY
+
 import ntplib
 from time import ctime
 import time
